@@ -1,6 +1,6 @@
 # Cubism.js v2.0
 
-Cubism.js is a [D3](http://d3js.org) plugin for visualizing time series. Use Cubism to construct better realtime dashboards, pulling data from [Graphite](https://github.com/square/cubism/wiki/Graphite), [Cube](https://github.com/square/cubism/wiki/Cube), [QuestDB](docs/QuestDB.md), and other sources. Cubism is available under the [Apache License](LICENSE).
+Cubism.js is a [D3](http://d3js.org) plugin for visualizing time series. Use Cubism to construct better realtime dashboards, pulling data from [Graphite](docs/Graphite.md), [Cube](docs/Cube.md), [QuestDB](docs/QuestDB.md), and other sources. Cubism is available under the [Apache License](LICENSE).
 
 ## What's New in v2.0
 
@@ -18,14 +18,16 @@ npm run build    # Build cubism.v2.js and cubism.v2.min.js
 npm run demo     # Run demo server
 ```
 
+**[📊 View Interactive Demo](demo/index.html)** - See Cubism v2.0 in action with horizon charts
+
 ## Data Sources
 
 Cubism supports multiple time series data sources:
 
-- **[Graphite](https://github.com/square/cubism/wiki/Graphite)** - Scalable time series database
-- **[Cube](https://github.com/square/cubism/wiki/Cube)** - Open-source time series analysis
+- **[Graphite](docs/Graphite.md)** - Scalable time series database
+- **[Cube](docs/Cube.md)** - Open-source time series analysis
 - **[QuestDB](docs/QuestDB.md)** - High-performance time series database ⭐ *New in v2.0*
-- **[Librato](https://github.com/square/cubism/wiki/Librato)** - Cloud monitoring service
+- **[Librato](docs/Librato.md)** - Cloud monitoring service
 - **[Ganglia](docs/Ganglia.md)** - Distributed monitoring system
 
 ## Usage Example
