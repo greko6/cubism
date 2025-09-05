@@ -19,6 +19,7 @@ Everything in Cubism is scoped under the `cubism` namespace. To get started, see
 * [context.graphite](Context#wiki-graphite) - create a source for Graphite metrics.
 * [context.cube](Context#wiki-cube) - create a source for Cube metrics.
 * [context.librato](Context#wiki-librato) - create a source for Librato metrics.
+* [context.questdb](Context#wiki-questdb) - create a source for QuestDB metrics.
 * [context.constant](Context#wiki-constant) - create a constant-value metric.
 * [context.horizon](Context#wiki-horizon) - create a horizon chart.
 * [context.comparison](Context#wiki-comparison) - create a comparison chart.
@@ -49,6 +50,11 @@ Everything in Cubism is scoped under the `cubism` namespace. To get started, see
 ## [librato](Librato)
 
 * [librato.metric](Librato#wiki-metric) - create a Librato metric.
+
+## [questdb](QuestDB)
+
+* [questdb.metric](QuestDB#wiki-metric) - create a QuestDB metric.
+* [questdb.toString](QuestDB#wiki-toString) - get the QuestDB host URL.
 
 ## [metric](Metric)
 
