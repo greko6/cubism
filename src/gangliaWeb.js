@@ -53,14 +53,15 @@ cubism_contextPrototype.gangliaWeb = function(config) {
                 '&cs=' + start/1000 + '&ce=' + stop/1000 + '&step=' + step/1000 + '&graphlot=1');
       }
 
-      d3.json(host + uriPathPrefix + 'graph.php?' + constructGangliaWebRequestQueryParams(),
-        function(result) {
-          if( !result ) {
-            return callback(new Error("Unable to fetch GangliaWeb data"));
-          }
+      d3.json(host + uriPathPrefix + 'graph.php?' + constructGangliaWebRequestQueryParams()).then(function(result) {
+        if( !result ) {
+          return callback(new Error("Unable to fetch GangliaWeb data"));
+        }
 
-          callback(null, result[0].data);
-        });
+        callback(null, result[0].data);
+      }).catch(function(error) {
+        callback(error);
+      });
 
     }, titleGenerator(metricInfo));
 

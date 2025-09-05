@@ -1,7 +1,8 @@
 cubism_contextPrototype.axis = function() {
   var context = this,
       scale = context.scale,
-      axis_ = d3.svg.axis().scale(scale);
+      axis_ = d3.axisBottom(scale),
+      orient = "bottom";
 
   var formatDefault = context.step() < 6e4 ? cubism_axisFormatSeconds
       : context.step() < 864e5 ? cubism_axisFormatMinutes
@@ -17,7 +18,7 @@ cubism_contextPrototype.axis = function() {
         .attr("width", context.size())
         .attr("height", Math.max(28, -axis.tickSize()))
       .append("g")
-        .attr("transform", "translate(0," + (axis_.orient() === "top" ? 27 : 4) + ")")
+        .attr("transform", "translate(0," + (orient === "top" ? 27 : 4) + ")")
         .call(axis_);
 
     context.on("change.axis-" + id, function() {
@@ -59,15 +60,33 @@ cubism_contextPrototype.axis = function() {
     return axis;
   };
 
-  return d3.rebind(axis, axis_,
-      "orient",
-      "ticks",
-      "tickSubdivide",
-      "tickSize",
-      "tickPadding",
-      "tickFormat");
+  // Manual method forwarding since d3.rebind was removed
+  axis.ticks = function() {
+    return arguments.length ? (axis_.ticks.apply(axis_, arguments), axis) : axis_.ticks();
+  };
+  
+  axis.tickSize = function() {
+    return arguments.length ? (axis_.tickSize.apply(axis_, arguments), axis) : axis_.tickSize();
+  };
+  
+  axis.tickPadding = function() {
+    return arguments.length ? (axis_.tickPadding.apply(axis_, arguments), axis) : axis_.tickPadding();
+  };
+  
+  axis.tickFormat = function() {
+    return arguments.length ? (axis_.tickFormat.apply(axis_, arguments), axis) : axis_.tickFormat();
+  };
+  
+  axis.orient = function(_) {
+    if (!arguments.length) return orient;
+    orient = _;
+    axis_ = orient === "top" ? d3.axisTop(scale) : d3.axisBottom(scale);
+    return axis;
+  };
+  
+  return axis;
 };
 
-var cubism_axisFormatSeconds = d3.time.format("%I:%M:%S %p"),
-    cubism_axisFormatMinutes = d3.time.format("%I:%M %p"),
-    cubism_axisFormatDays = d3.time.format("%B %d");
+var cubism_axisFormatSeconds = d3.timeFormat("%I:%M:%S %p"),
+    cubism_axisFormatMinutes = d3.timeFormat("%I:%M %p"),
+    cubism_axisFormatDays = d3.timeFormat("%B %d");

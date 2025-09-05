@@ -17,9 +17,11 @@ cubism_contextPrototype.graphite = function(host) {
       d3.text(host + "/render?format=raw"
           + "&target=" + encodeURIComponent("alias(" + target + ",'')")
           + "&from=" + cubism_graphiteFormatDate(start - 2 * step) // off-by-two?
-          + "&until=" + cubism_graphiteFormatDate(stop - 1000), function(text) {
+          + "&until=" + cubism_graphiteFormatDate(stop - 1000)).then(function(text) {
         if (!text) return callback(new Error("unable to load data"));
         callback(null, cubism_graphiteParse(text));
+      }).catch(function(error) {
+        callback(error);
       });
     }, expression += "");
 
@@ -33,9 +35,11 @@ cubism_contextPrototype.graphite = function(host) {
 
   source.find = function(pattern, callback) {
     d3.json(host + "/metrics/find?format=completer"
-        + "&query=" + encodeURIComponent(pattern), function(result) {
+        + "&query=" + encodeURIComponent(pattern)).then(function(result) {
       if (!result) return callback(new Error("unable to find metrics"));
       callback(null, result.metrics.map(function(d) { return d.path; }));
+    }).catch(function(error) {
+      callback(error);
     });
   };
 

@@ -2,7 +2,7 @@ cubism_contextPrototype.comparison = function() {
   var context = this,
       width = context.size(),
       height = 120,
-      scale = d3.scale.linear().interpolate(d3.interpolateRound),
+      scale = d3.scaleLinear(),
       primary = function(d) { return d[0]; },
       secondary = function(d) { return d[1]; },
       extent = null,
@@ -15,7 +15,7 @@ cubism_contextPrototype.comparison = function() {
   function comparison(selection) {
 
     selection
-        .on("mousemove.comparison", function() { context.focus(Math.round(d3.mouse(this)[0])); })
+        .on("mousemove.comparison", function(event) { context.focus(Math.round(d3.pointer(event, this)[0])); })
         .on("mouseout.comparison", function() { context.focus(null); });
 
     selection.append("canvas")

@@ -4,7 +4,7 @@ cubism_contextPrototype.horizon = function() {
       buffer = document.createElement("canvas"),
       width = buffer.width = context.size(),
       height = buffer.height = 30,
-      scale = d3.scale.linear().interpolate(d3.interpolateRound),
+      scale = d3.scaleLinear(),
       metric = cubism_identity,
       extent = null,
       title = cubism_identity,
@@ -14,7 +14,7 @@ cubism_contextPrototype.horizon = function() {
   function horizon(selection) {
 
     selection
-        .on("mousemove.horizon", function() { context.focus(Math.round(d3.mouse(this)[0])); })
+        .on("mousemove.horizon", function(event) { context.focus(Math.round(d3.pointer(event, this)[0])); })
         .on("mouseout.horizon", function() { context.focus(null); });
 
     selection.append("canvas")

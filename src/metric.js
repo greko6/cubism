@@ -67,7 +67,7 @@ cubism_contextPrototype.metric = function(request, name) {
       if (error) return console.warn(error);
       var i = isFinite(start) ? Math.round((start0 - start) / step) : 0;
       for (var j = 0, m = data.length; j < m; ++j) values[j + i] = data[j];
-      event.change.call(metric, start, stop);
+      event.call("change", metric, start, stop);
     });
   }
 

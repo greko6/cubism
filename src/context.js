@@ -7,7 +7,7 @@ cubism.context = function() {
       serverDelay = 5e3,
       clientDelay = 5e3,
       event = d3.dispatch("prepare", "beforechange", "change", "focus"),
-      scale = context.scale = d3.time.scale().range([0, size]),
+      scale = context.scale = d3.scaleTime().range([0, size]),
       timeout,
       focus;
 
@@ -31,13 +31,13 @@ cubism.context = function() {
     timeout = setTimeout(function prepare() {
       stop1 = new Date(Math.floor((Date.now() - serverDelay) / step) * step);
       start1 = new Date(stop1 - size * step);
-      event.prepare.call(context, start1, stop1);
+      event.call("prepare", context, start1, stop1);
 
       setTimeout(function() {
         scale.domain([start0 = start1, stop0 = stop1]);
-        event.beforechange.call(context, start1, stop1);
-        event.change.call(context, start1, stop1);
-        event.focus.call(context, focus);
+        event.call("beforechange", context, start1, stop1);
+        event.call("change", context, start1, stop1);
+        event.call("focus", context, focus);
       }, clientDelay);
 
       timeout = setTimeout(prepare, step);
@@ -88,7 +88,7 @@ cubism.context = function() {
 
   // Sets the focus to the specified index, and dispatches a "focus" event.
   context.focus = function(i) {
-    event.focus.call(context, focus = i);
+    event.call("focus", context, focus = i);
     return context;
   };
 
@@ -111,8 +111,8 @@ cubism.context = function() {
     return context;
   };
 
-  d3.select(window).on("keydown.context-" + ++cubism_id, function() {
-    switch (!d3.event.metaKey && d3.event.keyCode) {
+  d3.select(window).on("keydown.context-" + ++cubism_id, function(event) {
+    switch (!event.metaKey && event.keyCode) {
       case 37: // left
         if (focus == null) focus = size - 1;
         if (focus > 0) context.focus(--focus);
@@ -123,7 +123,7 @@ cubism.context = function() {
         break;
       default: return;
     }
-    d3.event.preventDefault();
+    event.preventDefault();
   });
 
   return update();

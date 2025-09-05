@@ -128,26 +128,28 @@ cubism_contextPrototype.librato = function(user, token) {
        * for the interval we are working on.
        */
       function actual_request(full_url) {
-        d3.json(full_url)
-          .header("X-Requested-With", "XMLHttpRequest")
-          .header("Authorization", auth_string)
-          .header("Librato-User-Agent", 'cubism/' + cubism.version)
-          .get(function (error, data) { /* Callback; data available */
-            if (!error) {
-              if (data.measurements.length === 0) {
-                return
-              }
-              data.measurements[0].series.forEach(function(o) { a_values.push(o); });
+        d3.json(full_url, {
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "Authorization": auth_string,
+            "Librato-User-Agent": 'cubism/' + cubism.version
+          }
+        }).then(function (data) { /* Callback; data available */
+          if (data.measurements.length === 0) {
+            return
+          }
+          data.measurements[0].series.forEach(function(o) { a_values.push(o); });
 
-              var still_more_values = 'query' in data && 'next_time' in data.query;
-              if (still_more_values) {
-                actual_request(make_url(data.query.next_time, iedate, step));
-              } else {
-                var a_adjusted = down_up_sampling(isdate, iedate, step, a_values);
-                callback_done(a_adjusted);
-              }
-            }
-          });
+          var still_more_values = 'query' in data && 'next_time' in data.query;
+          if (still_more_values) {
+            actual_request(make_url(data.query.next_time, iedate, step));
+          } else {
+            var a_adjusted = down_up_sampling(isdate, iedate, step, a_values);
+            callback_done(a_adjusted);
+          }
+        }).catch(function(error) {
+          console.warn("Librato request failed:", error);
+        });
       }
 
       actual_request(make_url(isdate, iedate, step));

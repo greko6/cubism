@@ -9,9 +9,11 @@ cubism_contextPrototype.cube = function(host) {
           + "?expression=" + encodeURIComponent(expression)
           + "&start=" + cubism_cubeFormatDate(start)
           + "&stop=" + cubism_cubeFormatDate(stop)
-          + "&step=" + step, function(data) {
+          + "&step=" + step).then(function(data) {
         if (!data) return callback(new Error("unable to load data"));
         callback(null, data.map(function(d) { return d.value; }));
+      }).catch(function(error) {
+        callback(error);
       });
     }, expression += "");
   };
@@ -24,4 +26,4 @@ cubism_contextPrototype.cube = function(host) {
   return source;
 };
 
-var cubism_cubeFormatDate = d3.time.format.iso;
+var cubism_cubeFormatDate = d3.isoFormat;
